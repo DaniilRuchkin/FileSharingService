@@ -29,21 +29,18 @@ public class FileRepository(DocumentDbContext appDbContext) : IFileRepository
         await appDbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteFileTimeAsync(DateTime deleteTime)
+    public async Task<IEnumerable<Document>> GetFilesToDeleteAsync(DateTime deleteTime)
     {
         var filesToDelete = await appDbContext.Files
             .AsNoTracking()
             .Where(f => f.UploadFileTime < deleteTime)
             .ToListAsync();
 
-        foreach (var file in filesToDelete)
-        {
-            System.IO.File.Delete(file.FilePath);
+        return filesToDelete;
+    }
 
-            appDbContext.Files.Remove(file);
-        }
-
+    public async Task SaveShangesAsync()
+    {
         await appDbContext.SaveChangesAsync();
     }
 }
-

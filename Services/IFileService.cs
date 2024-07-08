@@ -3,7 +3,7 @@ using FileSharingService.Models;
 
 namespace FileSharingService.Services;
 
-public interface IFilesServices
+public interface IFileService
 {
     public Task<string> FileSaveAsync(CreateFileDto dtoFile);
     public Task<Document> DowloadFileAsync(string fileName);

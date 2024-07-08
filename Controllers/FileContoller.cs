@@ -9,7 +9,7 @@ namespace FileSharingService.Controllers;
 [Route("api/v1/files")]
 [ApiController]
 [TypeFilter(typeof(NullCheckExceptionFilter))]
-public class FileContoller(IFilesServices services, IWebHostEnvironment webHostEnvironment) : ControllerBase
+public class FileContoller(IFileService services, IWebHostEnvironment webHostEnvironment) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> CreateFileAsync([FromForm] CreateFileDto createFileDto)

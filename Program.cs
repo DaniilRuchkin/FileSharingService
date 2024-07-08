@@ -22,9 +22,9 @@ var connectionString = $"""
 builder.Services.AddDbContext<DocumentDbContext>(options =>
 options.UseNpgsql(connectionString));
 
-builder.Services.AddScoped<IFilesServices, FilesServices>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();  
-builder.Services.AddHostedService<FilesCleanServices>();
+builder.Services.AddHostedService<FileCleanService>();
 
 builder.Services.AddControllers(op =>
 {

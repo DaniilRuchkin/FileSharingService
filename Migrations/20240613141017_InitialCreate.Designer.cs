@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FileSharingService.Migrations
 {
-    [DbContext(typeof(FileDbContext))]
+    [DbContext(typeof(DocumentDbContext))]
     [Migration("20240613141017_InitialCreate")]
     partial class InitialCreate
     {

@@ -6,7 +6,7 @@ namespace FileSharingService.Services;
 public interface IFilesServices
 {
     public Task<string> FileSaveAsync(CreateFileDto dtoFile);
-    public Task<Models.File> DowloadFileAsync(string fileName);
+    public Task<Document> DowloadFileAsync(string fileName);
     public Task<bool> DeleteFileAsync(FileDeleteDto fileDeleteDto);
 }
 

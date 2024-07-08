@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FileSharingService.Migrations
 {
-    [DbContext(typeof(FileDbContext))]
+    [DbContext(typeof(DocumentDbContext))]
     [Migration("20240614085115_UpdateEntityFileModel")]
     partial class UpdateEntityFileModel
     {

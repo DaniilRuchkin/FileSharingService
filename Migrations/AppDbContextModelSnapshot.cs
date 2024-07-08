@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace FileSharingService.Migrations;
 
-[DbContext(typeof(FileDbContext))]
+[DbContext(typeof(DocumentDbContext))]
 partial class AppDbContextModelSnapshot : ModelSnapshot
 {
     protected override void BuildModel(ModelBuilder modelBuilder)

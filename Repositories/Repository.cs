@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FileSharingService.Repository;
 
-public class Repository(FileDbContext appDbContext) : IRepository
+public class Repository(DocumentDbContext appDbContext) : IRepository
 {
-    public async Task<Models.File> GetFileAsync(string fileName)
+    public async Task<Document> GetFileAsync(string fileName)
     {
         var getFile =  await appDbContext.Files.
             AsNoTracking().
@@ -15,14 +15,14 @@ public class Repository(FileDbContext appDbContext) : IRepository
         return getFile!;
     }
 
-    public async Task SaveFileAsync(Models.File entityFile)
+    public async Task SaveFileAsync(Document entityFile)
     {
         await appDbContext.Files.AddAsync(entityFile);
 
         await appDbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteFileAsync(Models.File entityFile)
+    public async Task DeleteFileAsync(Document entityFile)
     {
         appDbContext.Files.Remove(entityFile);
 

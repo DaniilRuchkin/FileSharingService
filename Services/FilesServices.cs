@@ -29,7 +29,7 @@ public class FilesServices(IWebHostEnvironment webHostEnvironment, IRepository r
         return false;
     }
 
-    public async Task<Models.File> DowloadFileAsync(string fileName)
+    public async Task<Document> DowloadFileAsync(string fileName)
     {
         return await repository.GetFileAsync(fileName);
     }
@@ -47,7 +47,7 @@ public class FilesServices(IWebHostEnvironment webHostEnvironment, IRepository r
         var passwordHasher = new PasswordHasher<string>();
         var hashedPassword = passwordHasher.HashPassword(null!, dtoFile.Password);
 
-        var newFile = new Models.File
+        var newFile = new Document
         {
             UniqueName = uniqueFileName,
             FilePath = filePath,

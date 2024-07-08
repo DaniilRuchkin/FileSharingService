@@ -19,7 +19,7 @@ var connectionString = $"""
                         Password={connection["DATABASE_PASSWORD"]};
                         """;
 
-builder.Services.AddDbContext<ManagementDbContext>(options =>
+builder.Services.AddDbContext<FileDbContext>(options =>
 options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IFilesServices, FilesServices>();

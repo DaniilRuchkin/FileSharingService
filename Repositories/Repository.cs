@@ -33,7 +33,7 @@ public class Repository(DocumentDbContext appDbContext) : IRepository
     {
         var filesToDelete = await appDbContext.Files
             .AsNoTracking()
-            .Where(f => f.Time < deleteTime)
+            .Where(f => f.UploadFileTime < deleteTime)
             .ToListAsync();
 
         foreach (var file in filesToDelete)

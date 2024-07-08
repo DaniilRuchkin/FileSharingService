@@ -6,5 +6,5 @@ public class Document
     public string UniqueName { get; set; } = string.Empty;
     public string FilePath { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
-    public DateTime Time { get; set; }
+    public DateTime UploadFileTime { get; set; }
 }

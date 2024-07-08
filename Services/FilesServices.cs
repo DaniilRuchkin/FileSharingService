@@ -52,7 +52,7 @@ public class FilesServices(IWebHostEnvironment webHostEnvironment, IRepository r
             UniqueName = uniqueFileName,
             FilePath = filePath,
             Password = hashedPassword,
-            Time = DateTime.UtcNow,
+            UploadFileTime = DateTime.UtcNow,
         };
 
         await repository.SaveFileAsync(newFile);

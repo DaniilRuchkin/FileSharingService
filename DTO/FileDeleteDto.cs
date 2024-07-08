@@ -8,5 +8,5 @@ public class FileDeleteDto
     public string UniqueFileName { get; set; } = string.Empty;
 
     [Required, MinLength(3), MaxLength(64)]
-    public string Password {  get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }

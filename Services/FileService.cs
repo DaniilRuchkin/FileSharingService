@@ -19,9 +19,9 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
 
         if (passwordVerificationPassword == PasswordVerificationResult.Success)
         {
-            await repository.DeleteFileAsync(fileToDelete);
+            File.Delete(fileToDelete.FilePath);
 
-            System.IO.File.Delete(fileToDelete.FilePath);
+            await repository.DeleteFileAsync(fileToDelete);
 
             return true;
         }

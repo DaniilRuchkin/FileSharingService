@@ -38,7 +38,7 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
         var uniqueFileName = new Cuid2() + Path.GetExtension(dtoFile.File.FileName);
         var filePath = Path.Combine(webHostEnvironment.WebRootPath, uniqueFileName);
 
-        await using (var stream = new FileStream(filePath, FileMode.Create))
+        await using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize:4096, useAsync: true))
         {
             await dtoFile.File.CopyToAsync(stream);
         }

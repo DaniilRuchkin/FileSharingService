@@ -6,7 +6,7 @@ using FileSharingService.Services;
 
 namespace FileSharingService.Controllers;
 
-[Route("api/files")]
+[Route("api/v1/files")]
 [ApiController]
 [TypeFilter(typeof(NullCheckExceptionFilter))]
 public class FileContoller(IFilesServices services, IWebHostEnvironment webHostEnvironment) : ControllerBase
@@ -20,7 +20,7 @@ public class FileContoller(IFilesServices services, IWebHostEnvironment webHostE
     }
 
     [HttpGet("{uniqueFileName}")]
-    public async Task<IActionResult> GetFileAsync(string uniqueFileName)
+    public async Task<IActionResult> GetFileAsync([FromRoute] string uniqueFileName)
     {
         var dowloadedFile = await services.DowloadFileAsync(uniqueFileName);
         var webRoot = webHostEnvironment.WebRootPath;

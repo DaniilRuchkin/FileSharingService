@@ -2,7 +2,7 @@
 
 namespace FileSharingService.Repository;
 
-public interface IRepository
+public interface IFileRepository
 {
     public Task SaveFileAsync(Document entity);
     public Task<Document> GetFileAsync(string fileName);

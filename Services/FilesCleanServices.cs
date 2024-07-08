@@ -25,7 +25,7 @@ public class FilesCleanServices(IServiceProvider serviceProvider, IConfiguration
 
         using (var scope = serviceProvider.CreateScope())
         {
-            var repository = scope.ServiceProvider.GetRequiredService<IRepository>();
+            var repository = scope.ServiceProvider.GetRequiredService<IFileRepository>();
 
             await repository.DeleteFileTimeAsync(deleteBefore);
         }

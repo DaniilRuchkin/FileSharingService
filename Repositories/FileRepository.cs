@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FileSharingService.Repository;
 
-public class Repository(DocumentDbContext appDbContext) : IRepository
+public class FileRepository(DocumentDbContext appDbContext) : IFileRepository
 {
     public async Task<Document> GetFileAsync(string fileName)
     {

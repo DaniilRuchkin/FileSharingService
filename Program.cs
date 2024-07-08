@@ -23,7 +23,7 @@ builder.Services.AddDbContext<DocumentDbContext>(options =>
 options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IFilesServices, FilesServices>();
-builder.Services.AddScoped<IRepository, Repository>();  
+builder.Services.AddScoped<IFileRepository, FileRepository>();  
 builder.Services.AddHostedService<FilesCleanServices>();
 
 builder.Services.AddControllers(op =>

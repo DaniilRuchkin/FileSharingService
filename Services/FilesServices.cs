@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FileSharingService.Services;
 
-public class FilesServices(IWebHostEnvironment webHostEnvironment, IRepository repository) : IFilesServices
+public class FilesServices(IWebHostEnvironment webHostEnvironment, IFileRepository repository) : IFilesServices
 {
     public async Task<bool> DeleteFileAsync(FileDeleteDto fileDeleteDto)
     {

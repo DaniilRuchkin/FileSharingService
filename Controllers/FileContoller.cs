@@ -19,8 +19,8 @@ public class FileContoller(IFilesServices services, IWebHostEnvironment webHostE
         return Ok(filePath);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetFileAsync([Required] string uniqueFileName)
+    [HttpGet("{uniqueFileName}")]
+    public async Task<IActionResult> GetFileAsync(string uniqueFileName)
     {
         var dowloadedFile = await services.DowloadFileAsync(uniqueFileName);
         var webRoot = webHostEnvironment.WebRootPath;

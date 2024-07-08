@@ -1,14 +1,15 @@
-﻿using FileSharingService.Repository;
+﻿using FileSharingService.Configurations;
+using FileSharingService.Repository;
 using Microsoft.Extensions.Options;
 
 namespace FileSharingService.FileClean;
 
-public class FileCleanService(IServiceProvider serviceProvider, IConfiguration configuration) : BackgroundService
+public class FileCleanService(IServiceProvider serviceProvider, IOptions<CleanSettings> options) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        int cleanIntervalDays = configuration.GetValue<int>("CleanupSettings:CleanupIntervalDays");
-
+        var cleanIntervalDays = options.Value.CleanupIntervalDays;
+        
         while (!cancellationToken.IsCancellationRequested)
         {
             await CleanupOldFilesAsync();
@@ -21,7 +22,7 @@ public class FileCleanService(IServiceProvider serviceProvider, IConfiguration c
 
     private async Task CleanupOldFilesAsync()
     {
-        int deleteBeforeDays = configuration.GetValue<int>("CleanupSettings:DeleteBeforeDays");
+        var deleteBeforeDays = options.Value.DeleteBeforeDays;
         var deleteBefore = DateTime.UtcNow.AddDays(-deleteBeforeDays);
 
         using (var scope = serviceProvider.CreateScope())

@@ -4,6 +4,7 @@ using FileSharingService.Repository;
 using FileSharingService.FileClean;
 using FileSharingService.Services;
 using FileSharingService.Filters;
+using FileSharingService.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,10 @@ builder.Services.AddDbContext<DocumentDbContext>(options =>
 options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IFileService, FileService>();
-builder.Services.AddScoped<IFileRepository, FileRepository>();  
+builder.Services.AddScoped<IFileRepository, FileRepository>();
+
+builder.Services.Configure<CleanSettings>(builder.Configuration.GetSection("CleanupSettings"));
+
 builder.Services.AddHostedService<FileCleanService>();
 
 builder.Services.AddControllers(op =>

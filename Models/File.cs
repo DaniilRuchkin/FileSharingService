@@ -1,6 +1,6 @@
 ﻿namespace FileSharingService.Models;
 
-public class EntityFile
+public class File
 {
     public int Id { get; set; }
     public string UniqueName { get; set; } = string.Empty;

@@ -21,7 +21,7 @@ public class FilesServices(IWebHostEnvironment webHostEnvironment, IRepository r
         {
             await repository.DeleteFileAsync(fileToDelete);
 
-            File.Delete(fileToDelete.FilePath);
+            System.IO.File.Delete(fileToDelete.FilePath);
 
             return true;
         }
@@ -29,7 +29,7 @@ public class FilesServices(IWebHostEnvironment webHostEnvironment, IRepository r
         return false;
     }
 
-    public async Task<EntityFile> DowloadFileAsync(string fileName)
+    public async Task<Models.File> DowloadFileAsync(string fileName)
     {
         return await repository.GetFileAsync(fileName);
     }
@@ -47,7 +47,7 @@ public class FilesServices(IWebHostEnvironment webHostEnvironment, IRepository r
         var passwordHasher = new PasswordHasher<string>();
         var hashedPassword = passwordHasher.HashPassword(null!, dtoFile.Password);
 
-        var newFile = new EntityFile
+        var newFile = new Models.File
         {
             UniqueName = uniqueFileName,
             FilePath = filePath,

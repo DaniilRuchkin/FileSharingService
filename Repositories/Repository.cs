@@ -6,7 +6,7 @@ namespace FileSharingService.Repository;
 
 public class Repository(FileDbContext appDbContext) : IRepository
 {
-    public async Task<EntityFile> GetFileAsync(string fileName)
+    public async Task<Models.File> GetFileAsync(string fileName)
     {
         var getFile =  await appDbContext.Files.
             AsNoTracking().
@@ -15,14 +15,14 @@ public class Repository(FileDbContext appDbContext) : IRepository
         return getFile!;
     }
 
-    public async Task SaveFileAsync(EntityFile entityFile)
+    public async Task SaveFileAsync(Models.File entityFile)
     {
         await appDbContext.Files.AddAsync(entityFile);
 
         await appDbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteFileAsync(EntityFile entityFile)
+    public async Task DeleteFileAsync(Models.File entityFile)
     {
         appDbContext.Files.Remove(entityFile);
 
@@ -38,7 +38,7 @@ public class Repository(FileDbContext appDbContext) : IRepository
 
         foreach (var file in filesToDelete)
         {
-            File.Delete(file.FilePath);
+            System.IO.File.Delete(file.FilePath);
 
             appDbContext.Files.Remove(file);
         }

@@ -5,5 +5,5 @@ namespace FileSharingService.DbContextFile;
 
 public class FileDbContext(DbContextOptions<FileDbContext> options) : DbContext(options)
 {
-    public DbSet<EntityFile> Files { get; set; }
+    public DbSet<Models.File> Files { get; set; }
 }

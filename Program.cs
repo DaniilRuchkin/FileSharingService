@@ -5,6 +5,7 @@ using FileSharingService.FileClean;
 using FileSharingService.Services;
 using FileSharingService.Filters;
 using FileSharingService.Configurations;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
+builder.Services.AddScoped<IPasswordHasher<string>, PasswordHasher<string>>();
 
 builder.Services.Configure<CleanSettings>(builder.Configuration.GetSection("CleanupSettings"));
 

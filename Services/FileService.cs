@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FileSharingService.Services;
 
-public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository repository) : IFileService
+public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository repository, IPasswordHasher<string> passwordHasher) : IFileService
 {
     public async Task<bool> DeleteFileAsync(FileDeleteDto fileDeleteDto)
     {
@@ -14,7 +14,6 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
 
         if (fileToDelete == null) return false;
 
-        var passwordHasher = new PasswordHasher<string>();
         var passwordVerificationPassword = passwordHasher.VerifyHashedPassword(null!, fileToDelete.Password, fileDeleteDto.Password);
 
         if (passwordVerificationPassword == PasswordVerificationResult.Success)
@@ -44,7 +43,6 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
             await dtoFile.File.CopyToAsync(stream);
         }
 
-        var passwordHasher = new PasswordHasher<string>();
         var hashedPassword = passwordHasher.HashPassword(null!, dtoFile.Password);
 
         var newFile = new Document

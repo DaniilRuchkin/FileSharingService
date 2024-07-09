@@ -12,9 +12,9 @@ namespace FileSharingService.Controllers;
 public class FileContoller(IFileService services) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateFileAsync([FromForm] CreateFileDto createFileDto)
+    public async Task<IActionResult> CreateFileAsync([FromForm] CreateFileDto createFileDto, CancellationToken cancellationToken)
     {
-        var fileData = await services.FileSaveAsync(createFileDto);
+        var fileData = await services.FileSaveAsync(createFileDto, cancellationToken);
 
         var response = new BaseResponse<FileDataDto>
         {
@@ -25,17 +25,17 @@ public class FileContoller(IFileService services) : ControllerBase
     }
 
     [HttpGet("{uniqueFileName}")]
-    public async Task<IActionResult> GetFileAsync([FromRoute] string uniqueFileName)
+    public async Task<IActionResult> GetFileAsync([FromRoute] string uniqueFileName, CancellationToken cancellationToken)
     {
-        var getDowloadedFile = await services.DowloadFileAsync(uniqueFileName);
+        var getDowloadedFile = await services.DowloadFileAsync(uniqueFileName, cancellationToken);
         
         return PhysicalFile(getDowloadedFile.FilePath!, "application/octet-stream", Path.GetFileName(getDowloadedFile.FilePath));
     }
 
     [HttpDelete]
-    public async Task<IActionResult> DeleteFileAsync(FileDeleteDto fileDeleteDto)
+    public async Task<IActionResult> DeleteFileAsync(FileDeleteDto fileDeleteDto, CancellationToken cancellationToken)
     {
-        var fileDataToDelete = await services.DeleteFileAsync(fileDeleteDto);
+        var fileDataToDelete = await services.DeleteFileAsync(fileDeleteDto, cancellationToken);
 
         var response = new BaseResponse<FileDataDto>
         {

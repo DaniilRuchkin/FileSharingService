@@ -9,5 +9,4 @@ public class CreateFileDto
 
     [Required, MinLength(3), MaxLength(64)]
     public string Password { get; set; } = string.Empty;
-    
 }

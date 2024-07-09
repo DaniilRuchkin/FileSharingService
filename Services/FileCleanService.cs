@@ -12,7 +12,7 @@ public class FileCleanService(IServiceProvider serviceProvider, IOptions<CleanSe
         
         while (!cancellationToken.IsCancellationRequested)
         {
-            await CleanupOldFilesAsync();
+            await CleanupOldFilesAsync(cancellationToken);
 
             var cleanupInterval = TimeSpan.FromDays(cleanIntervalDays);
 
@@ -20,7 +20,7 @@ public class FileCleanService(IServiceProvider serviceProvider, IOptions<CleanSe
         }
     }
 
-    private async Task CleanupOldFilesAsync()
+    private async Task CleanupOldFilesAsync(CancellationToken cancellationToken)
     {
         var deleteBeforeDays = options.Value.DeleteBeforeDays;
         var deleteBefore = DateTime.UtcNow.AddDays(-deleteBeforeDays);
@@ -28,7 +28,7 @@ public class FileCleanService(IServiceProvider serviceProvider, IOptions<CleanSe
         using (var scope = serviceProvider.CreateScope())
         {
             var repository = scope.ServiceProvider.GetRequiredService<IFileRepository>();
-            var filesToDelete = await repository.GetFilesToDeleteAsync(deleteBefore);
+            var filesToDelete = await repository.GetFilesToDeleteAsync(deleteBefore, cancellationToken);
 
             foreach (var file in filesToDelete)
             {
@@ -37,9 +37,9 @@ public class FileCleanService(IServiceProvider serviceProvider, IOptions<CleanSe
                     File.Delete(file.FilePath);
                 }
 
-                await repository.DeleteFileAsync(file);
+                await repository.DeleteFileAsync(file, cancellationToken);
             }
-            await repository.SaveShangesAsync();
+            await repository.SaveShangesAsync(cancellationToken);
         }
     }
 }

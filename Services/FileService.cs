@@ -8,9 +8,9 @@ namespace FileSharingService.Services;
 
 public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository repository, IPasswordHasher<string> passwordHasher) : IFileService
 {
-    public async Task<FileDataDto> DeleteFileAsync(FileDeleteDto fileDeleteDto)
+    public async Task<FileDataDto> DeleteFileAsync(FileDeleteDto fileDeleteDto, CancellationToken cancellationToken)
     {
-        var fileToDelete = await repository.GetFileAsync(fileDeleteDto.UniqueFileName);
+        var fileToDelete = await repository.GetFileAsync(fileDeleteDto.UniqueFileName, cancellationToken);
 
         if (fileToDelete == null)
         {
@@ -23,7 +23,7 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
         {
             File.Delete(fileToDelete.FilePath);
 
-            await repository.DeleteFileAsync(fileToDelete);
+            await repository.DeleteFileAsync(fileToDelete, cancellationToken);
 
             return new FileDataDto { IsSuccess = true };
         }
@@ -31,9 +31,9 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
         return new FileDataDto { IsSuccess = false };
     }
 
-    public async Task<FileDataDto> DowloadFileAsync(string fileName)
+    public async Task<FileDataDto> DowloadFileAsync(string fileName, CancellationToken cancellationToken)
     {
-        var getFile = await repository.GetFileAsync(fileName);
+        var getFile = await repository.GetFileAsync(fileName, cancellationToken);
         
         if (getFile == null)
         {
@@ -47,7 +47,7 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
         return new FileDataDto { IsSuccess = true, FilePath = filePath };
     }
 
-    public async Task<FileDataDto> FileSaveAsync(CreateFileDto dtoFile)
+    public async Task<FileDataDto> FileSaveAsync(CreateFileDto dtoFile, CancellationToken cancellationToken)
     {
         var uniqueFileName = new Cuid2() + Path.GetExtension(dtoFile.File.FileName);
         var filePath = Path.Combine(webHostEnvironment.WebRootPath, uniqueFileName);
@@ -67,7 +67,7 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
             UploadFileTime = DateTime.UtcNow,
         };
 
-        await repository.SaveFileAsync(newFile);
+        await repository.SaveFileAsync(newFile, cancellationToken);
 
         return new FileDataDto { FilePath = filePath, IsSuccess = true };
     }

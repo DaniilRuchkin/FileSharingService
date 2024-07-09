@@ -31,9 +31,14 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
         return new FileDataDto { IsSuccess = false };
     }
 
-    public async Task<Document> DowloadFileAsync(string fileName)
+    public async Task<FileDataDto> DowloadFileAsync(string fileName)
     {
-        return await repository.GetFileAsync(fileName);
+        var getFile = await repository.GetFileAsync(fileName);
+
+        var webRoot = webHostEnvironment.WebRootPath;
+        var filePath = Path.Combine(webRoot, getFile.UniqueName);
+
+        return new FileDataDto { IsSuccess = true, FilePath = filePath };
     }
 
     public async Task<FileDataDto> FileSaveAsync(CreateFileDto dtoFile)

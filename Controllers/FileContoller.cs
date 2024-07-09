@@ -9,7 +9,7 @@ namespace FileSharingService.Controllers;
 [Route("api/v1/files")]
 [ApiController]
 [TypeFilter(typeof(NullCheckExceptionFilter))]
-public class FileContoller(IFileService services, IWebHostEnvironment webHostEnvironment) : ControllerBase
+public class FileContoller(IFileService services) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> CreateFileAsync([FromForm] CreateFileDto createFileDto)
@@ -27,11 +27,9 @@ public class FileContoller(IFileService services, IWebHostEnvironment webHostEnv
     [HttpGet("{uniqueFileName}")]
     public async Task<IActionResult> GetFileAsync([FromRoute] string uniqueFileName)
     {
-        var dowloadedFile = await services.DowloadFileAsync(uniqueFileName);
-        var webRoot = webHostEnvironment.WebRootPath;
-        var filePath = Path.Combine(webRoot, dowloadedFile.UniqueName);
-
-        return PhysicalFile(filePath, "application/octet-stream", Path.GetFileName(filePath));
+        var getDowloadedFile = await services.DowloadFileAsync(uniqueFileName);
+        
+        return PhysicalFile(getDowloadedFile.FilePath!, "application/octet-stream", Path.GetFileName(getDowloadedFile.FilePath));
     }
 
     [HttpDelete]

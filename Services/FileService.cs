@@ -34,6 +34,12 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
     public async Task<FileDataDto> DowloadFileAsync(string fileName)
     {
         var getFile = await repository.GetFileAsync(fileName);
+        
+        if (getFile == null)
+        {
+            throw new NullReferenceException("File not found.");
+        
+        }
 
         var webRoot = webHostEnvironment.WebRootPath;
         var filePath = Path.Combine(webRoot, getFile.UniqueName);

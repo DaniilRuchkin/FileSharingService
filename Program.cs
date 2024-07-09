@@ -6,6 +6,7 @@ using FileSharingService.Services;
 using FileSharingService.Filters;
 using FileSharingService.Configurations;
 using Microsoft.AspNetCore.Identity;
+using FileSharingService.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ErrorMiddleware>();
 
 app.UseStaticFiles();
 app.UseRouting();

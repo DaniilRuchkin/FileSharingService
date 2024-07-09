@@ -16,7 +16,7 @@ public class FileContoller(IFileService services) : ControllerBase
     {
         var fileData = await services.FileSaveAsync(createFileDto);
 
-        var response = new Response<FileDataDto>
+        var response = new BaseResponse<FileDataDto>
         {
             Data = fileData
         };
@@ -37,7 +37,7 @@ public class FileContoller(IFileService services) : ControllerBase
     {
         var fileDataToDelete = await services.DeleteFileAsync(fileDeleteDto);
 
-        var response = new Response<FileDataDto>
+        var response = new BaseResponse<FileDataDto>
         {
             Data = fileDataToDelete
         };

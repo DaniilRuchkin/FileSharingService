@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using FileSharingService.DTO;
-using System.ComponentModel.DataAnnotations;
+﻿using FileSharingService.DTO;
 using FileSharingService.Filters;
+using FileSharingService.Response;
 using FileSharingService.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FileSharingService.Controllers;
 
@@ -14,9 +14,14 @@ public class FileContoller(IFileService services, IWebHostEnvironment webHostEnv
     [HttpPost]
     public async Task<IActionResult> CreateFileAsync([FromForm] CreateFileDto createFileDto)
     {
-        var filePath = await services.FileSaveAsync(createFileDto);
+        var fileData = await services.FileSaveAsync(createFileDto);
 
-        return Ok(filePath);
+        var response = new Response<FileDataDto>
+        {
+            Data = fileData
+        };
+
+        return Ok(response);
     }
 
     [HttpGet("{uniqueFileName}")]
@@ -32,8 +37,13 @@ public class FileContoller(IFileService services, IWebHostEnvironment webHostEnv
     [HttpDelete]
     public async Task<IActionResult> DeleteFileAsync(FileDeleteDto fileDeleteDto)
     {
-        var fileToDelete = await services.DeleteFileAsync(fileDeleteDto);
-        
-        return Ok(fileToDelete);
+        var fileDataToDelete = await services.DeleteFileAsync(fileDeleteDto);
+
+        var response = new Response<FileDataDto>
+        {
+            Data = fileDataToDelete
+        };
+
+        return Ok(response);
     }
 }

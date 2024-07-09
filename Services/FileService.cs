@@ -1,18 +1,21 @@
 ﻿using FileSharingService.DTO;
 using FileSharingService.Models;
-using Visus.Cuid;
 using FileSharingService.Repository;
 using Microsoft.AspNetCore.Identity;
+using Visus.Cuid;
 
 namespace FileSharingService.Services;
 
 public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository repository, IPasswordHasher<string> passwordHasher) : IFileService
 {
-    public async Task<bool> DeleteFileAsync(FileDeleteDto fileDeleteDto)
+    public async Task<FileDataDto> DeleteFileAsync(FileDeleteDto fileDeleteDto)
     {
         var fileToDelete = await repository.GetFileAsync(fileDeleteDto.UniqueFileName);
 
-        if (fileToDelete == null) return false;
+        if (fileToDelete == null)
+        {
+            return new FileDataDto { IsSuccess = false };
+        }
 
         var passwordVerificationPassword = passwordHasher.VerifyHashedPassword(null!, fileToDelete.Password, fileDeleteDto.Password);
 
@@ -22,10 +25,10 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
 
             await repository.DeleteFileAsync(fileToDelete);
 
-            return true;
+            return new FileDataDto { IsSuccess = true };
         }
 
-        return false;
+        return new FileDataDto { IsSuccess = false };
     }
 
     public async Task<Document> DowloadFileAsync(string fileName)
@@ -33,7 +36,7 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
         return await repository.GetFileAsync(fileName);
     }
 
-    public async Task<string> FileSaveAsync(CreateFileDto dtoFile)
+    public async Task<FileDataDto> FileSaveAsync(CreateFileDto dtoFile)
     {
         var uniqueFileName = new Cuid2() + Path.GetExtension(dtoFile.File.FileName);
         var filePath = Path.Combine(webHostEnvironment.WebRootPath, uniqueFileName);
@@ -55,6 +58,6 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
 
         await repository.SaveFileAsync(newFile);
 
-        return uniqueFileName;
+        return new FileDataDto { FilePath = filePath, IsSuccess = true };
     }
 }

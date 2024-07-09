@@ -10,7 +10,7 @@ public class ErrorMiddleware(RequestDelegate next)
 		{
 			await next.Invoke(context);
 		}
-		catch (Exception ex)
+		catch (NullReferenceException ex)
 		{
 			var response = new BaseResponse<object>
 			{
@@ -19,8 +19,12 @@ public class ErrorMiddleware(RequestDelegate next)
 			};
 
 			context.Response.StatusCode = StatusCodes.Status400BadRequest;
-
 			await context.Response.WriteAsJsonAsync(response);		
+		}
+		catch(OperationCanceledException)
+		{
+			context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+			await context.Response.WriteAsync("Operation was canceled");
 		}
 	}
 }

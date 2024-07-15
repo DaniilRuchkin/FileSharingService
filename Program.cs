@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-DotNetEnv.Env.Load("./.env");
+DotNetEnv.Env.Load("./example.env");
 var connection = Environment.GetEnvironmentVariables();
 var connectionString = $"""
                         Host={connection["DATABASE_HOST"]}; 

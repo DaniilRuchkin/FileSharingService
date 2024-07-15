@@ -1,5 +1,4 @@
 ﻿using FileSharingService.DTO;
-using FileSharingService.Filters;
 using FileSharingService.Response;
 using FileSharingService.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,6 @@ namespace FileSharingService.Controllers;
 
 [Route("api/v1/files")]
 [ApiController]
-[TypeFilter(typeof(NullCheckExceptionFilter))]
 public class FileContoller(IFileService services) : ControllerBase
 {
     [HttpPost]

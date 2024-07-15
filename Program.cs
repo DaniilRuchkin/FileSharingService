@@ -1,12 +1,11 @@
-using FileSharingService.DbContextFile;
-using Microsoft.EntityFrameworkCore;
-using FileSharingService.Repository;
-using FileSharingService.FileClean;
-using FileSharingService.Services;
-using FileSharingService.Filters;
 using FileSharingService.Configurations;
-using Microsoft.AspNetCore.Identity;
+using FileSharingService.DbContextFile;
+using FileSharingService.FileClean;
 using FileSharingService.Middleware;
+using FileSharingService.Repository;
+using FileSharingService.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,10 +32,6 @@ builder.Services.Configure<CleanSettings>(builder.Configuration.GetSection("Clea
 
 builder.Services.AddHostedService<FileCleanService>();
 
-builder.Services.AddControllers(op =>
-{
-    op.Filters.Add<NullCheckExceptionFilter>();
-});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

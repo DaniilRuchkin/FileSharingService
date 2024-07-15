@@ -8,5 +8,5 @@ public class CreateFileDto
     public IFormFile File { get; set; } = null!;
 
     [Required, MinLength(3), MaxLength(64)]
-    public string Password { get; set; } = string.Empty;
+    public string? Password { get; set; }
 }

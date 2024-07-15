@@ -10,7 +10,5 @@ public interface IFileRepository
 
     public Task DeleteFileAsync(Document entityFile, CancellationToken cancellationToken);
 
-    public Task<IEnumerable<Document>> GetFilesToDeleteAsync(DateTime deleteTime, CancellationToken cancellationToken);
-
-    public Task SaveShangesAsync(CancellationToken cancellationToken);
+    public Task<IEnumerable<Document>> GetFilesToDeleteAsync(DateTime deleteTime, int pageIndex, int pageSize, CancellationToken cancellationToken);
 }

@@ -1,6 +1,7 @@
 ﻿using FileSharingService.Configurations;
 using FileSharingService.Repository;
 using Microsoft.Extensions.Options;
+using Npgsql.PostgresTypes;
 
 namespace FileSharingService.FileClean;
 
@@ -24,22 +25,34 @@ public class FileCleanService(IServiceProvider serviceProvider, IOptions<CleanSe
     {
         var deleteBeforeDays = options.Value.DeleteBeforeDays;
         var deleteBefore = DateTime.UtcNow.AddDays(-deleteBeforeDays);
+        int pageSize = 50;
 
         using (var scope = serviceProvider.CreateScope())
         {
             var repository = scope.ServiceProvider.GetRequiredService<IFileRepository>();
-            var filesToDelete = await repository.GetFilesToDeleteAsync(deleteBefore, cancellationToken);
+            int pageIndex = 0;
 
-            foreach (var file in filesToDelete)
+            while (true)
             {
-                if (File.Exists(file.FilePath))
+                var filesToDelete = await repository.GetFilesToDeleteAsync(deleteBefore, pageIndex, pageSize, cancellationToken);
+
+                if(!filesToDelete.Any())
                 {
-                    File.Delete(file.FilePath);
+                    break;
                 }
 
-                await repository.DeleteFileAsync(file, cancellationToken);
+                foreach (var file in filesToDelete)
+                {
+                    if (File.Exists(file.FilePath))
+                    {
+                        File.Delete(file.FilePath);
+                    }
+
+                    await repository.DeleteFileAsync(file, cancellationToken);
+                }
+
+                pageIndex++;
             }
-            await repository.SaveShangesAsync(cancellationToken);
         }
     }
 }

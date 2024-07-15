@@ -24,23 +24,20 @@ public class FileRepository(DocumentDbContext appDbContext) : IFileRepository
 
     public async Task DeleteFileAsync(Document entityFile, CancellationToken cancellationToken)
     {
-        appDbContext.Files.RemoveRange(entityFile);
+        appDbContext.Files.Remove(entityFile);
 
         await appDbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Document>> GetFilesToDeleteAsync(DateTime deleteTime, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Document>> GetFilesToDeleteAsync(DateTime deleteTime, int pageIndex, int pageSize, CancellationToken cancellationToken)
     {
         var filesToDelete = await appDbContext.Files
             .AsNoTracking()
             .Where(f => f.UploadFileTime < deleteTime)
+            .Skip(pageIndex * pageIndex)
+            .Take(pageSize)
             .ToListAsync(cancellationToken);
 
         return filesToDelete;
-    }
-
-    public async Task SaveShangesAsync(CancellationToken cancellationToken)
-    {
-        await appDbContext.SaveChangesAsync(cancellationToken);
     }
 }

@@ -10,14 +10,14 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
 {
     public async Task<FileDataDto> DeleteFileAsync(FileDeleteDto fileDeleteDto, CancellationToken cancellationToken)
     {
-        var fileToDelete = await repository.GetFileAsync(fileDeleteDto.UniqueFileName, cancellationToken);
+        var fileToDelete = await repository.GetFileAsync(fileDeleteDto.UniqueFileName!, cancellationToken);
 
         if (fileToDelete == null)
         {
             return new FileDataDto { IsSuccess = false };
         }
 
-        var passwordVerificationPassword = passwordHasher.VerifyHashedPassword(null!, fileToDelete.Password, fileDeleteDto.Password);
+        var passwordVerificationPassword = passwordHasher.VerifyHashedPassword(null!, fileToDelete.Password, fileDeleteDto.Password!);
 
         if (passwordVerificationPassword == PasswordVerificationResult.Success)
         {
@@ -57,7 +57,7 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
             await dtoFile.File.CopyToAsync(stream);
         }
 
-        var hashedPassword = passwordHasher.HashPassword(null!, dtoFile.Password);
+        var hashedPassword = passwordHasher.HashPassword(null!, dtoFile.Password!);
 
         var newFile = new Document
         {

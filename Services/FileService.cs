@@ -19,16 +19,16 @@ public class FileService(IWebHostEnvironment webHostEnvironment, IFileRepository
 
         var passwordVerificationPassword = passwordHasher.VerifyHashedPassword(null!, fileToDelete.Password, fileDeleteDto.Password!);
 
-        if (passwordVerificationPassword == PasswordVerificationResult.Success)
+        if (passwordVerificationPassword != PasswordVerificationResult.Success)
         {
-            File.Delete(fileToDelete.FilePath);
-
-            await repository.DeleteFileAsync(fileToDelete, cancellationToken);
-
-            return new FileDataDto { IsSuccess = true };
+            return new FileDataDto { IsSuccess = false };
         }
 
-        return new FileDataDto { IsSuccess = false };
+        File.Delete(fileToDelete.FilePath);
+
+        await repository.DeleteFileAsync(fileToDelete, cancellationToken);
+
+        return new FileDataDto { IsSuccess = true };
     }
 
     public async Task<FileDataDto> DowloadFileAsync(string fileName, CancellationToken cancellationToken)
